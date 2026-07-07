@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barista Rush</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="game">
+
+        <!-- HUD -->
+        <header class="hud">
+
+            <div class="score">
+                ⭐ 0
+            </div>
+
+            <div class="timer">
+                ⏱ 60
+            </div>
+
+            <div class="life">
+                ❤️ 3
+            </div>
+
+        </header>
+
+       <!-- Cafeteria -->
+        <main class="cafeteria">
+
+            <!-- Janelas -->
+            <div class="windows"></div>
+
+            <!-- Salão -->
+            <div class="floor">
+
+                <div class="tables">
+
+                    <!-- Mesa 1 -->
+                    <div class="table">
+                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
+                        <img src="img/characters/criança.png" class="customer pos-left" alt="Cliente">
+                    </div>
+
+                    <!-- Mesa 2 -->
+                   <div class="table">
+
+                   <img src="img/characters/homem.png"
+                   class="customer pos-bottom">
+
+                   <img src="img/furniture/mesa.png"
+                     class="table-asset">
+
+                     </div>
+                    <!-- Mesa 3 -->
+                    <div class="table">
+                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
+                        <div class="customer"></div>
+                    </div>
+
+                    <!-- Mesa 4 -->
+                    <div class="table">
+                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
+                        <div class="customer"></div>
+                    </div>
+
+                    <!-- Mesa 5 -->
+                    <div class="table">
+                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
+                        <div class="customer"></div>
+                    </div>
+
+                    <!-- Mesa 6 -->
+                    <div class="table">
+                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
+                        <div class="customer"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Balcão -->
+            <div class="counter">
+                <!-- Barista -->
+                <img src="img/characters/barista.png" alt="Barista" class="barista">
+
+                <!-- Área de preparo -->
+                <div class="workstation">
+                    <div class="coffee-machine">☕</div>
+                    <div class="ingredients">
+                        <div class="ingredient">☕</div>
+                        <div class="ingredient">🥛</div>
+                        <div class="ingredient">🍬</div>
+                        <div class="ingredient">🍫</div>
+                        <div class="ingredient">🌿</div>
+                        <div class="ingredient">🍦</div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        </main>
+
+        <!-- Rodapé -->
+        <footer class="bottom">
+
+            <div class="recipe">
+
+                <h3>Receita</h3>
+
+                <div class="recipe-items">
+                    <span>☕</span>
+                    <span>🥛</span>
+                    <span>🍫</span>
+                </div>
+
+            </div>
+
+            <button class="serve">
+                Servir
+            </button>
+
+        </footer>
+
+    </div>
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>

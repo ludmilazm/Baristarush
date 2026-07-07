@@ -1,0 +1,299 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#2d2d2d;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* ===========================
+   JOGO
+=========================== */
+
+.game{
+    width:100%;
+    max-width:430px;
+    min-height:100vh;
+    margin:auto;
+    background:#f3deb5;
+    display:flex;
+    flex-direction:column;
+    overflow: hidden;
+}
+
+/* ===========================
+   HUD
+=========================== */
+
+.hud{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#4b2f1f;
+    color:#fff;
+    padding:15px 20px;
+    font-size:22px;
+    font-weight:bold;
+    z-index: 10;
+}
+
+/* ===========================
+   CAFETERIA
+=========================== */
+
+.cafeteria{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   JANELAS
+=========================== */
+
+.windows{
+    height: 40px;
+    background:
+    repeating-linear-gradient(
+        to right,
+        #8fd3ff 0px,
+        #8fd3ff 60px,
+        #d8f2ff 60px,
+        #d8f2ff 65px
+    );
+}
+
+/* ===========================
+   SALÃO
+=========================== */
+
+.floor{
+    flex:1;
+    padding: 20px 10px;
+    background: linear-gradient(
+        45deg,
+        #efd8ac 25%,
+        #f3dfb8 25%,
+        #f3dfb8 50%,
+        #efd8ac 50%,
+        #efd8ac 75%,
+        #f3dfb8 75%
+    );
+    background-size:60px 60px;
+}
+
+.tables{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap: 35px 15px;
+    justify-items:center;
+}
+
+/* Container de cada Mesa */
+.table{
+    position: relative;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+}
+
+.table-asset{
+    position:absolute;
+    width:80px;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+    z-index:2;
+}
+/* ===========================
+   CLIENTES
+=========================== */
+
+.customer{
+    position:absolute;
+    width: 50px;
+    height: auto;
+    image-rendering:pixelated;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px; /* Caso use emojis */
+}
+
+.customer.pos-left {
+    left: -6px;
+    top: 46%;
+    transform: translateY(-50%);
+    z-index: 3;
+}
+.customer.right{
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+}
+
+.customer.top{
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1; /* Atrás da mesa */
+}
+
+.customer.pos-bottom{
+    z-index:3;
+}
+
+.customer.pos-bottom{
+    position:absolute;
+
+    width:45px;
+
+    left:65%;
+    top:5px;
+
+    transform:translateX(-41%);
+}
+
+/* ===========================
+   BALCÃO
+=========================== */
+
+.counter{
+    background:#dd9e41;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:15px;
+    height:140px;
+    border-top:6px solid #b77e2d;
+}
+
+/* ===========================
+   BARISTA
+=========================== */
+
+.barista{
+    width:75px;
+    position:relative;
+    top:-25px;
+    height:auto;
+    image-rendering:pixelated;
+    flex-shrink:0;
+    z-index: 4;
+}
+
+/* ===========================
+   ESTAÇÃO DE PREPARO
+=========================== */
+
+.workstation{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    width:100%;
+}
+
+.coffee-machine{
+    font-size:28px;
+}
+
+.ingredients{
+    display:flex;
+    gap:6px;
+    flex-wrap:nowrap;
+}
+
+.ingredient{
+    width:40px;
+    height:40px;
+    background:#bb3c3c;
+    border-radius:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+}
+
+/* ===========================
+   RODAPÉ
+=========================== */
+
+.bottom{
+    background:#6b4423;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.recipe{
+    background:#fff;
+    color:#333;
+    padding:10px;
+    border-radius:10px;
+    width:180px;
+    height:70px;
+}
+
+.recipe h3{
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+.recipe-items{
+    display:flex;
+    gap:10px;
+    font-size:20px;
+}
+
+.serve{
+    width:120px;
+    height:50px;
+    border:none;
+    border-radius:10px;
+    background:#41b649;
+    color:#fff;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.serve:hover{
+    background:#35963c;
+}
+
+/* ===========================
+   RESPONSIVIDADE (Telas Pequenas)
+=========================== */
+
+@media (max-width:430px){
+    .tables{
+        grid-template-columns:repeat(2,1fr);
+        gap: 25px 10px;
+    }
+
+    .counter{
+        height: auto;
+        flex-direction: row;
+        padding: 10px;
+    }
+
+    .barista{
+        width: 60px;
+        top: -15px;
+    }
+
+    .ingredient{
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+    }
+}

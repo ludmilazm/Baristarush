@@ -8,17 +8,6 @@ BaristaRush é um jogo em que o jogador assume o papel de um barista. O objetivo
 
 ---
 
-## 👥 Equipe
-
-| Integrante | Responsabilidade |
-|------------|------------------|
-| Pedro Henrique Pinto | Programação do Backend |
-| Ludmila | Interface e Front-end |
-| Emanoel Rodrigo | Mecânicas e Gameplay |
-| Maria Eduarda | Áudio, Testes e Qualidade |
-
----
-
 # Funcionalidades
 
 - [x] Estrutura inicial da interface
@@ -27,6 +16,17 @@ BaristaRush é um jogo em que o jogador assume o papel de um barista. O objetivo
 - [x] Clientes (pixel art)
 - [ ] Tela inicial
 - [ ] Tela de Game Over
+
+---
+
+## 👥 Equipe
+
+| Integrante | Responsabilidade |
+|------------|------------------|
+| Pedro Henrique Pinto | Programação do Backend |
+| Ludmila | Interface e Front-end |
+| Emanoel Rodrigo | Mecânicas e Gameplay |
+| Maria Eduarda | Áudio, Testes e Qualidade |
 
 ---
 

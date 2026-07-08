@@ -1,26 +1,26 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    background:#2d2d2d;
-    font-family:Arial, Helvetica, sans-serif;
+body {
+    background: #2d2d2d;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* ===========================
    JOGO
 =========================== */
 
-.game{
-    width:100%;
-    max-width:430px;
-    min-height:100vh;
-    margin:auto;
-    background:#f3deb5;
-    display:flex;
-    flex-direction:column;
+.game {
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    margin: auto;
+    background: #f3deb5;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
 }
 
@@ -28,15 +28,15 @@ body{
    HUD
 =========================== */
 
-.hud{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#4b2f1f;
-    color:#fff;
-    padding:15px 20px;
-    font-size:22px;
-    font-weight:bold;
+.hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #4b2f1f;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 22px;
+    font-weight: bold;
     z-index: 10;
 }
 
@@ -44,20 +44,19 @@ body{
    CAFETERIA
 =========================== */
 
-.cafeteria{
-    flex:1;
-    display:flex;
-    flex-direction:column;
+.cafeteria {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* ===========================
    JANELAS
 =========================== */
 
-.windows{
+.windows {
     height: 40px;
-    background:
-    repeating-linear-gradient(
+    background: repeating-linear-gradient(
         to right,
         #8fd3ff 0px,
         #8fd3ff 60px,
@@ -69,10 +68,15 @@ body{
 /* ===========================
    SALÃO
 =========================== */
+/* ===========================
+   SALÃO
+=========================== */
 
-.floor{
-    flex:1;
+.floor {
+    flex: 1;
     padding: 20px 10px;
+    position: relative;
+    overflow: hidden;
     background: linear-gradient(
         45deg,
         #efd8ac 25%,
@@ -82,218 +86,289 @@ body{
         #efd8ac 75%,
         #f3dfb8 75%
     );
-    background-size:60px 60px;
+    background-size: 60px 60px;
 }
 
-.tables{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap: 35px 15px;
-    justify-items:center;
+.arrival-guest {
+    position: absolute;
+    left: -70px;
+    bottom: 24px;
+    width: 56px;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.arrival-guest img {
+    width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+}
+
+.arrival-guest.is-active {
+    animation: arrival-walk 2.8s ease-in-out forwards;
+}
+
+.arrival-guest.is-seated {
+    opacity: 1;
+    animation: none;
+    transform: none;
+    width: 35px;
+    z-index: 4;
+}
+
+@keyframes arrival-walk {
+    0% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+    12% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(190px);
+    }
+}
+
+.tables {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 45px 15px; /* Espaço para as cabeças e pés não cortarem */
+    justify-items: center;
 }
 
 /* Container de cada Mesa */
-.table{
+.table {
     position: relative;
     width: 90px;
     height: 90px;
-    overflow: hidden;
+    overflow: visible;
 }
 
-.table-asset{
-    position:absolute;
-    width:80px;
-
-    left:50%;
-    top:50%;
-
-    transform:translate(-50%,-50%);
-    z-index:2;
-}
-/* ===========================
-   CLIENTES
-=========================== */
-
-.customer{
-    position:absolute;
-    width: 50px;
-    height: auto;
-    image-rendering:pixelated;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 40px; /* Caso use emojis */
-}
-
-.customer.pos-left {
-    left: -6px;
-    top: 46%;
-    transform: translateY(-50%);
-    z-index: 3;
-}
-.customer.right{
-    right: -25px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 3;
-}
-
-.customer.top{
-    top: -25px;
+.table-asset {
+    position: absolute;
+    width: 80px;
     left: 50%;
-    transform: translateX(-50%);
-    z-index: 1; /* Atrás da mesa */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Fica no meio entre os clientes da frente e de trás */
 }
 
-.customer.pos-bottom{
-    z-index:3;
+/* Configuração base comum para todos os clientes */
+.table img.customer {
+    width: 35px;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+    position: absolute;
 }
 
-.customer.pos-bottom{
-    position:absolute;
+/* ==========================================================
+   ALINHAMENTO ESPECÍFICO DOS PERSONAGENS (POR MESA)
+========================================================== */
 
-    width:45px;
+/* ==========================================================
+   ALINHAMENTO ESPECÍFICO DOS PERSONAGENS (POR MESA) - FINAL
+========================================================== */
 
-    left:65%;
-    top:5px;
-
-    transform:translateX(-41%);
+/* MESA 1 (Esquerda) - Menina de azul na cadeira da frente */
+.table:nth-child(1) img.customer {
+    left: 4px;   /* Aumentado (ex: de -6px para 4px) para movê-la para a direita, colando no encosto */
+    top: 28px;   /* Diminuído (ex: de 32px para 14px) para subi-la até o assento de madeira */
+    z-index: 3;  /* Mantém à frente da mesa */
 }
 
+/* MESA 2 (Meio) - Homem de azul na cadeira da frente */
+.table:nth-child(2) img.customer {
+    right: -1px; /* Mudado de left para right */
+    top: 6px;    /* Sobe o boneco para o assento de trás */
+    z-index: 4;   /* Fica atrás da mesa para dar profundidade */
+}
+/* MESA 3 (Direita) - Menina de rosa na cadeira de trás */
+/* Mantida a posição que já deu certo! */
+.table:nth-child(3) img.customer {
+    right: -1px;
+    top: 6px;   
+    z-index: 4;  /* Mantém atrás da mesa para dar profundidade */
+}
 /* ===========================
    BALCÃO
 =========================== */
 
-.counter{
-    background:#dd9e41;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:15px;
-    height:140px;
-    border-top:6px solid #b77e2d;
+.counter {
+    background: #dd9e41;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    height: 140px;
+    border-top: 6px solid #b77e2d;
 }
 
 /* ===========================
    BARISTA
 =========================== */
 
-.barista{
-    width:75px;
-    position:relative;
-    top:-25px;
-    height:auto;
-    image-rendering:pixelated;
-    flex-shrink:0;
-    z-index: 4;
+.counter {
+    background: #dd9e41;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 15px;
+    height: 140px;
+    border-top: 6px solid #b77e2d;
+    position: relative;
+    overflow: visible;
+}
+
+.barista {
+    width: 75px;
+    position: relative;
+    top: -25px;
+    height: auto;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+    z-index: 7;
+}
+
+.workstation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    position: relative;
+    z-index: 6;
+}
+
+.customer-pickup {
+    position: absolute;
+    left: 100px;
+    top: -64px;
+    width: 60px;
+    height: auto;
+    image-rendering: pixelated;
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+    transition: all .25s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.customer-pickup.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 /* ===========================
    ESTAÇÃO DE PREPARO
 =========================== */
 
-.workstation{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    width:100%;
+.workstation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
 }
 
-.coffee-machine{
-    font-size:28px;
+.coffee-machine {
+    font-size: 28px;
 }
 
-.ingredients{
-    display:flex;
-    gap:6px;
-    flex-wrap:nowrap;
+.ingredients {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
 }
 
-.ingredient{
-    width:40px;
-    height:40px;
-    background:#bb3c3c;
-    border-radius:12px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:24px;
-    box-shadow:0 3px 8px rgba(0,0,0,.25);
+.ingredient {
+    width: 40px;
+    height: 40px;
+    background: #bb3c3c;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
 }
 
 /* ===========================
    RODAPÉ
 =========================== */
 
-.bottom{
-    background:#6b4423;
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.bottom {
+    background: #6b4423;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.recipe{
-    background:#fff;
-    color:#333;
-    padding:10px;
-    border-radius:10px;
-    width:180px;
-    height:70px;
+.recipe {
+    background: #fff;
+    color: #333;
+    padding: 10px;
+    border-radius: 10px;
+    width: 180px;
+    height: 70px;
 }
 
-.recipe h3{
-    font-size:14px;
-    margin-bottom:4px;
+.recipe h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
 }
 
-.recipe-items{
-    display:flex;
-    gap:10px;
-    font-size:20px;
+.recipe-items {
+    display: flex;
+    gap: 10px;
+    font-size: 20px;
 }
 
-.serve{
-    width:120px;
-    height:50px;
-    border:none;
-    border-radius:10px;
-    background:#41b649;
-    color:#fff;
-    font-size:20px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.2s;
+.serve {
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    background: #41b649;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
 }
 
-.serve:hover{
-    background:#35963c;
+.serve:hover {
+    background: #35963c;
 }
 
 /* ===========================
    RESPONSIVIDADE (Telas Pequenas)
 =========================== */
 
-@media (max-width:430px){
-    .tables{
-        grid-template-columns:repeat(2,1fr);
+@media (max-width: 430px) {
+    .tables {
+        grid-template-columns: repeat(2, 1fr);
         gap: 25px 10px;
     }
 
-    .counter{
+    .counter {
         height: auto;
         flex-direction: row;
         padding: 10px;
     }
 
-    .barista{
+    .barista {
         width: 60px;
         top: -15px;
     }
 
-    .ingredient{
+    .ingredient {
         width: 35px;
         height: 35px;
         font-size: 20px;
     }
+
 }

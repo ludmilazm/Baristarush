@@ -1,3 +1,23 @@
+// ===========================
+// TELA DE ABERTURA (SPLASH)
+// ===========================
+
+function iniciarJogo() {
+    const splashScreen = document.querySelector('.splash-screen');
+    if (splashScreen) {
+        splashScreen.classList.add('hidden');
+    }
+}
+
+const botaoStart = document.getElementById('startBtn');
+if (botaoStart) {
+    botaoStart.addEventListener('click', iniciarJogo);
+}
+
+// ===========================
+// FUNÇÕES DO JOGO
+// ===========================
+
 function mostrarClienteNoBalcao() {
     // 1. Mostra a cliente atrás do balcão
     const clienteBalcao = document.querySelector('.customer-pickup');
@@ -12,60 +32,80 @@ function mostrarClienteNoBalcao() {
     }
 }
 
-function iniciarChegadaDoCliente() {
-    const chegadaCliente = document.querySelector('.arrival-guest');
-    const clienteMesa2 = document.querySelector('.table:nth-child(2) .customer');
-    const imagemChegada = chegadaCliente ? chegadaCliente.querySelector('img') : null;
+function animarClienteParaMesa({ spriteEntrada, spriteSentado, targetTableSelector }) {
+    return new Promise((resolve) => {
+        const chegadaCliente = document.querySelector('.arrival-guest');
+        const imagemChegada = chegadaCliente ? chegadaCliente.querySelector('img') : null;
+        const mesa = document.querySelector(targetTableSelector);
 
-    if (chegadaCliente && imagemChegada) {
-        if (clienteMesa2) {
-            clienteMesa2.style.display = 'none';
+        if (!chegadaCliente || !imagemChegada || !mesa) {
+            resolve();
+            return;
+        }
+
+        const chair = mesa.querySelector('.chair');
+        if (chair) {
+            const clienteAtualDaMesa = chair.querySelector('.customer');
+            if (clienteAtualDaMesa) {
+                clienteAtualDaMesa.style.display = 'none';
+            }
         }
 
         chegadaCliente.classList.remove('is-seated');
-        chegadaCliente.classList.add('is-active');
-        imagemChegada.src = 'img/characters/homemempe.png';
-        chegadaCliente.style.bottom = '24px';
-        chegadaCliente.style.left = '-70px';
-        chegadaCliente.style.top = 'auto';
+        chegadaCliente.classList.remove('is-active');
         chegadaCliente.style.opacity = '0';
         chegadaCliente.style.transform = 'translateX(0)';
         chegadaCliente.style.width = '56px';
+        chegadaCliente.style.display = 'block';
+        imagemChegada.src = spriteEntrada;
+        chegadaCliente.style.bottom = '24px';
+        chegadaCliente.style.left = '-70px';
+        chegadaCliente.style.top = 'auto';
+
+        void chegadaCliente.offsetWidth;
+        chegadaCliente.classList.add('is-active');
 
         chegadaCliente.addEventListener('animationend', () => {
             if (!chegadaCliente.classList.contains('is-active')) {
+                resolve();
                 return;
             }
 
-            const mesa2 = document.querySelector('.table:nth-child(2)');
+            if (chair) {
+                const antigo = chair.querySelector('.customer');
+                if (antigo) antigo.remove();
 
-            // Coloca o personagem dentro da cadeira da mesa 2 (substitui o placeholder)
-            if (mesa2) {
-                const chair = mesa2.querySelector('.chair');
-                if (chair) {
-                    // Remove cliente antigo se existir
-                    const antigo = chair.querySelector('.customer');
-                    if (antigo) antigo.remove();
-
-                    // Cria a imagem sentada e insere na cadeira
-                    const seatedImg = document.createElement('img');
-                    seatedImg.src = 'img/characters/homem.png';
-                    seatedImg.alt = 'Cliente';
-                    seatedImg.className = 'customer';
-                    seatedImg.style.width = '35px';
-                    seatedImg.style.imageRendering = 'pixelated';
-                    chair.appendChild(seatedImg);
-
-                    // Esconde o elemento de chegada (não precisamos mais dele)
-                    chegadaCliente.style.display = 'none';
-                }
+                const seatedImg = document.createElement('img');
+                seatedImg.src = spriteSentado;
+                seatedImg.alt = 'Cliente';
+                seatedImg.className = 'customer';
+                seatedImg.style.width = '35px';
+                seatedImg.style.imageRendering = 'pixelated';
+                chair.appendChild(seatedImg);
             }
+
+            chegadaCliente.style.display = 'none';
+            resolve();
         }, { once: true });
 
         requestAnimationFrame(() => {
             chegadaCliente.classList.add('is-active');
         });
-    }
+    });
+}
+
+async function iniciarChegadaDoCliente() {
+    await animarClienteParaMesa({
+        spriteEntrada: 'img/characters/homemempe.png',
+        spriteSentado: 'img/characters/homem.png',
+        targetTableSelector: '.table:nth-child(2)'
+    });
+
+    await animarClienteParaMesa({
+        spriteEntrada: 'img/characters/idosoempe.png',
+        spriteSentado: 'img/characters/idoso.png',
+        targetTableSelector: '.table:nth-child(4)'
+    });
 }
 
 // Vincula ao clique do botão Servir

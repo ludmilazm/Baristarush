@@ -11,6 +11,21 @@
 
 <body>
 
+    <!-- TELA DE ABERTURA -->
+    <div class="splash-screen active">
+        <div class="splash-content">
+            <div class="splash-icon">☕</div>
+            <h1 class="splash-title">Barista Rush</h1>
+            <p class="splash-subtitle">Cada segundo conta. Cada pedido importa. Você aguenta o Rush Hour?</p>
+            <button class="splash-button" id="startBtn"> Jogar</button>
+            <div class="splash-decorations">
+                <span class="decoration">🍦</span>
+                <span class="decoration">🥐</span>
+                <span class="decoration">🍫</span>
+            </div>
+        </div>
+    </div>
+
     <div class="game">
 
         <!-- HUD -->
@@ -72,7 +87,9 @@
                     <!-- Mesa 4 -->
                     <div class="table">
                         <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
-                        <div class="chair chair-left"></div>
+                        <div class="chair chair-left">
+                            <img src="img/characters/idoso.png" class="customer" alt="Cliente">
+                        </div>
                     </div>
 
                     <!-- Mesa 5 -->

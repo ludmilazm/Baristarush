@@ -3,158 +3,1411 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Barista Rush, um jogo de gerenciamento de cafeteria."
+    >
+
     <title>Barista Rush</title>
 
     <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/script.js" defer></script>
 </head>
 
 <body>
 
-    <!-- TELA DE ABERTURA -->
-    <div class="splash-screen active">
-        <div class="splash-content">
-            <div class="splash-icon">☕</div>
-            <h1 class="splash-title">Barista Rush</h1>
-            <p class="splash-subtitle">Cada segundo conta. Cada pedido importa. Você aguenta o Rush Hour?</p>
-            <button class="splash-button" id="startBtn"> Jogar</button>
-            <div class="splash-decorations">
-                <span class="decoration">🍦</span>
-                <span class="decoration">🥐</span>
-                <span class="decoration">🍫</span>
+    <!-- =====================================================
+         TELA DE ABERTURA
+    ====================================================== -->
+    <section
+        class="splash-screen"
+        id="splashScreen"
+        aria-labelledby="splashTitle"
+    >
+        <div class="splash-card">
+
+            <div class="splash-icon" aria-hidden="true">
+                ☕
             </div>
+
+            <h1 id="splashTitle">
+                Barista Rush
+            </h1>
+
+            <p class="splash-subtitle">
+                Cada segundo conta. Cada pedido importa.
+                Você aguenta o Rush Hour?
+            </p>
+
+            <button
+                class="primary-button splash-button"
+                id="startBtn"
+                type="button"
+            >
+                Jogar
+            </button>
+
+            <div
+                class="splash-decorations"
+                aria-hidden="true"
+            >
+                <span>☕</span>
+                <span>🥐</span>
+                <span>🍫</span>
+            </div>
+
         </div>
-    </div>
+    </section>
 
-    <div class="game">
 
-        <!-- HUD -->
+    <!-- =====================================================
+         APLICAÇÃO PRINCIPAL
+    ====================================================== -->
+    <div class="game-app" id="gameApp">
+
+        <!-- =================================================
+             HUD
+        ================================================== -->
         <header class="hud">
 
-            <div class="score">
-                ⭐ 0
+            <div class="hud-group hud-progress">
+
+                <div class="hud-item">
+                    <span class="hud-label">Dia</span>
+
+                    <strong id="dayValue">
+                        1
+                    </strong>
+                </div>
+
+                <div class="hud-item">
+                    <span class="hud-label">Nível</span>
+
+                    <strong id="levelValue">
+                        1
+                    </strong>
+                </div>
+
+                <div class="hud-item hud-item-score">
+                    <span class="hud-label">Pontos</span>
+
+                    <strong id="scoreValue">
+                        0
+                    </strong>
+                </div>
+
+                <div class="hud-item hud-item-coins">
+                    <span class="hud-label">Moedas</span>
+
+                    <strong>
+                        🪙
+                        <span id="coinsValue">0</span>
+                    </strong>
+                </div>
+
             </div>
 
-            <div class="timer">
-                ⏱ 60
+
+            <div class="hud-satisfaction">
+
+                <div class="satisfaction-header">
+
+                    <span class="hud-label">
+                        Satisfação
+                    </span>
+
+                    <strong id="satisfactionValue">
+                        100%
+                    </strong>
+
+                </div>
+
+                <div
+                    class="satisfaction-track"
+                    role="progressbar"
+                    aria-label="Satisfação da cafeteria"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="100"
+                    id="satisfactionTrack"
+                >
+                    <div
+                        class="satisfaction-fill"
+                        id="satisfactionFill"
+                    ></div>
+                </div>
+
             </div>
 
-            <div class="life">
-                ❤️ 3
+
+            <div class="hud-actions">
+
+                <div class="day-timer">
+                    <span aria-hidden="true">⏱</span>
+
+                    <strong id="dayTimerValue">
+                        02:00
+                    </strong>
+                </div>
+
+                <button
+                    class="hud-button"
+                    id="shopBtn"
+                    type="button"
+                    aria-label="Abrir loja"
+                >
+                    🛒 Loja
+                </button>
+
+                <button
+                    class="hud-button"
+                    id="pauseBtn"
+                    type="button"
+                    aria-label="Pausar jogo"
+                >
+                    ⏸ Pausar
+                </button>
+
             </div>
 
         </header>
 
-       <!-- Cafeteria -->
-        <main class="cafeteria">
 
-            <!-- Janelas -->
-            <div class="windows"></div>
+        <!-- =================================================
+             CONTEÚDO PRINCIPAL
+        ================================================== -->
+        <main class="game-main">
 
-            <!-- Salão -->
-            <div class="floor">
+            <!-- =============================================
+                 PAINEL DA FILA
+            ============================================== -->
+            <aside
+                class="queue-panel"
+                aria-labelledby="queueTitle"
+            >
+                <div class="panel-title">
 
-                <div class="arrival-guest" aria-hidden="true">
-                    <img src="img/characters/homemempe.png" alt="Cliente chegando">
-                </div>
+                    <div>
+                        <span class="panel-icon" aria-hidden="true">
+                            🚶
+                        </span>
 
-                <div class="tables">
-
-                    <!-- Mesa 1 -->
-                    <div class="table">
-                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
-                        <div class="chair chair-left">
-                            <img src="img/characters/criança.png" class="customer" alt="Cliente">
-                        </div>
+                        <h2 id="queueTitle">
+                            Fila
+                        </h2>
                     </div>
 
-                    <!-- Mesa 2 -->
-                    <div class="table">
-                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
-                        <div class="chair chair-bottom">
-                            <img src="img/characters/homem.png" class="customer" alt="Cliente">
-                        </div>
-                    </div>
-
-                    <!-- Mesa 3 -->
-                    <div class="table table-3">
-                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
-                        <div class="chair chair-right">
-                            <img src="img/characters/mulher.png" class="customer" alt="Cliente">
-                        </div>
-                    </div>
-
-                    <!-- Mesa 4 -->
-                    <div class="table">
-                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
-                        <div class="chair chair-left">
-                            <img src="img/characters/idoso.png" class="customer" alt="Cliente">
-                        </div>
-                    </div>
-
-                    <!-- Mesa 5 -->
-                    <div class="table">
-                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
-                        <div class="chair chair-bottom"></div>
-                    </div>
-
-                    <!-- Mesa 6 -->
-                    <div class="table">
-                        <img src="img/furniture/mesa.png" class="table-asset" alt="Mesa">
-                        <div class="chair chair-right">
-                        </div>
-                    </div>
+                    <span
+                        class="queue-counter"
+                        id="queueCounter"
+                    >
+                        0/3
+                    </span>
 
                 </div>
 
-            </div>
+                <p class="queue-description">
+                    Clientes esperando por uma mesa.
+                </p>
 
-            <!-- Balcão -->
-            <div class="counter">
-                <!-- Barista -->
-                <img src="img/characters/barista.png" alt="Barista" class="barista">
-                <img src="img/characters/criançaempe.png" alt="Cliente pegando café" class="customer-pickup">
-                <!-- Área de preparo -->
-                <div class="workstation">
-                    <div class="coffee-machine">☕</div>
-                    <div class="ingredients">
-                        <div class="ingredient">☕</div>
-                        <div class="ingredient">🥛</div>
-                        <div class="ingredient">🍬</div>
-                        <div class="ingredient">🍫</div>
-                        <div class="ingredient">🌿</div>
-                        <div class="ingredient">🍦</div>
+                <div
+                    class="queue-list"
+                    id="queueList"
+                >
+
+                    <div
+                        class="queue-slot"
+                        data-queue-position="0"
+                    >
+                        <span class="queue-empty">
+                            Vazio
+                        </span>
                     </div>
+
+                    <div
+                        class="queue-slot"
+                        data-queue-position="1"
+                    >
+                        <span class="queue-empty">
+                            Vazio
+                        </span>
+                    </div>
+
+                    <div
+                        class="queue-slot"
+                        data-queue-position="2"
+                    >
+                        <span class="queue-empty">
+                            Vazio
+                        </span>
+                    </div>
+
                 </div>
-            </div>
+
+                <div class="queue-warning" id="queueWarning">
+                    A fila está tranquila.
+                </div>
+
+            </aside>
+
+
+            <!-- =============================================
+                 CAFETERIA
+            ============================================== -->
+            <section
+                class="cafeteria"
+                aria-label="Salão da cafeteria"
+            >
+
+                <div class="cafeteria-window">
+
+                    <div class="window-panel"></div>
+                    <div class="window-panel"></div>
+                    <div class="window-panel"></div>
+                    <div class="window-panel"></div>
+
+                </div>
+
+
+                <!-- =========================================
+                     PISO E MESAS
+                ========================================== -->
+                <div class="cafeteria-floor" id="cafeFloor">
+
+                    <!-- Camada para animação de personagens -->
+                    <div
+                        class="movement-layer"
+                        id="movementLayer"
+                        aria-hidden="true"
+                    ></div>
+
+                    <!-- Camada para as sujeiras -->
+                    <div
+                        class="dirt-layer"
+                        id="dirtLayer"
+                        aria-label="Sujeiras no chão"
+                    ></div>
+
+
+                    <div class="tables-grid" id="tablesGrid">
+
+                        <!-- ===============================
+                             MESA 1 — DESBLOQUEADA
+                        ================================ -->
+                        <article
+                            class="table-slot is-unlocked"
+                            data-table-id="1"
+                            data-table-state="empty"
+                            tabindex="0"
+                            role="button"
+                            aria-label="Mesa 1, disponível"
+                        >
+
+                            <div class="table-number">
+                                Mesa 1
+                            </div>
+
+                            <div class="order-bubble is-hidden">
+
+                                <strong class="order-recipe-name">
+                                    Pedido
+                                </strong>
+
+                                <div class="order-ingredients"></div>
+
+                                <span class="order-time-hint">
+                                    Pontuação total por 10 segundos
+                                </span>
+
+                            </div>
+
+                            <div class="customer-layer"></div>
+
+                            <img
+                                src="img/furniture/mesa.png"
+                                class="table-image"
+                                alt="Mesa redonda da cafeteria"
+                            >
+
+                            <div class="customer-patience is-hidden">
+
+                                <div class="patience-track">
+                                    <div class="patience-fill"></div>
+                                </div>
+
+                                <span class="patience-value">
+                                    100%
+                                </span>
+
+                            </div>
+
+                            <div class="table-status">
+                                Disponível
+                            </div>
+
+                        </article>
+
+
+                        <!-- ===============================
+                             MESA 2 — DESBLOQUEADA
+                        ================================ -->
+                        <article
+                            class="table-slot is-unlocked"
+                            data-table-id="2"
+                            data-table-state="empty"
+                            tabindex="0"
+                            role="button"
+                            aria-label="Mesa 2, disponível"
+                        >
+
+                            <div class="table-number">
+                                Mesa 2
+                            </div>
+
+                            <div class="order-bubble is-hidden">
+
+                                <strong class="order-recipe-name">
+                                    Pedido
+                                </strong>
+
+                                <div class="order-ingredients"></div>
+
+                                <span class="order-time-hint">
+                                    Pontuação total por 10 segundos
+                                </span>
+
+                            </div>
+
+                            <div class="customer-layer"></div>
+
+                            <img
+                                src="img/furniture/mesa.png"
+                                class="table-image"
+                                alt="Mesa redonda da cafeteria"
+                            >
+
+                            <div class="customer-patience is-hidden">
+
+                                <div class="patience-track">
+                                    <div class="patience-fill"></div>
+                                </div>
+
+                                <span class="patience-value">
+                                    100%
+                                </span>
+
+                            </div>
+
+                            <div class="table-status">
+                                Disponível
+                            </div>
+
+                        </article>
+
+
+                        <!-- ===============================
+                             MESA 3 — DESBLOQUEADA
+                        ================================ -->
+                        <article
+                            class="table-slot is-unlocked"
+                            data-table-id="3"
+                            data-table-state="empty"
+                            tabindex="0"
+                            role="button"
+                            aria-label="Mesa 3, disponível"
+                        >
+
+                            <div class="table-number">
+                                Mesa 3
+                            </div>
+
+                            <div class="order-bubble is-hidden">
+
+                                <strong class="order-recipe-name">
+                                    Pedido
+                                </strong>
+
+                                <div class="order-ingredients"></div>
+
+                                <span class="order-time-hint">
+                                    Pontuação total por 10 segundos
+                                </span>
+
+                            </div>
+
+                            <div class="customer-layer"></div>
+
+                            <img
+                                src="img/furniture/mesa.png"
+                                class="table-image"
+                                alt="Mesa redonda da cafeteria"
+                            >
+
+                            <div class="customer-patience is-hidden">
+
+                                <div class="patience-track">
+                                    <div class="patience-fill"></div>
+                                </div>
+
+                                <span class="patience-value">
+                                    100%
+                                </span>
+
+                            </div>
+
+                            <div class="table-status">
+                                Disponível
+                            </div>
+
+                        </article>
+
+
+                        <!-- ===============================
+                             MESA 4 — BLOQUEADA
+                        ================================ -->
+                        <article
+                            class="table-slot is-locked"
+                            data-table-id="4"
+                            data-table-state="locked"
+                            tabindex="-1"
+                            aria-label="Posição da Mesa 4, bloqueada"
+                        >
+
+                            <div class="table-number">
+                                Mesa 4
+                            </div>
+
+                            <div class="locked-table-placeholder">
+
+                                <span class="locked-icon">
+                                    🔒
+                                </span>
+
+                                <strong>
+                                    Espaço disponível
+                                </strong>
+
+                                <span>
+                                    Compre a Mesa 4 na loja
+                                </span>
+
+                            </div>
+
+                            <div class="order-bubble is-hidden">
+
+                                <strong class="order-recipe-name">
+                                    Pedido
+                                </strong>
+
+                                <div class="order-ingredients"></div>
+
+                                <span class="order-time-hint">
+                                    Pontuação total por 10 segundos
+                                </span>
+
+                            </div>
+
+                            <div class="customer-layer"></div>
+
+                            <img
+                                src="img/furniture/mesa.png"
+                                class="table-image"
+                                alt="Mesa redonda da cafeteria"
+                            >
+
+                            <div class="customer-patience is-hidden">
+
+                                <div class="patience-track">
+                                    <div class="patience-fill"></div>
+                                </div>
+
+                                <span class="patience-value">
+                                    100%
+                                </span>
+
+                            </div>
+
+                            <div class="table-status">
+                                Bloqueada
+                            </div>
+
+                        </article>
+
+
+                        <!-- ===============================
+                             MESA 5 — BLOQUEADA
+                        ================================ -->
+                        <article
+                            class="table-slot is-locked"
+                            data-table-id="5"
+                            data-table-state="locked"
+                            tabindex="-1"
+                            aria-label="Posição da Mesa 5, bloqueada"
+                        >
+
+                            <div class="table-number">
+                                Mesa 5
+                            </div>
+
+                            <div class="locked-table-placeholder">
+
+                                <span class="locked-icon">
+                                    🔒
+                                </span>
+
+                                <strong>
+                                    Espaço disponível
+                                </strong>
+
+                                <span>
+                                    Compre a Mesa 5 na loja
+                                </span>
+
+                            </div>
+
+                            <div class="order-bubble is-hidden">
+
+                                <strong class="order-recipe-name">
+                                    Pedido
+                                </strong>
+
+                                <div class="order-ingredients"></div>
+
+                                <span class="order-time-hint">
+                                    Pontuação total por 10 segundos
+                                </span>
+
+                            </div>
+
+                            <div class="customer-layer"></div>
+
+                            <img
+                                src="img/furniture/mesa.png"
+                                class="table-image"
+                                alt="Mesa redonda da cafeteria"
+                            >
+
+                            <div class="customer-patience is-hidden">
+
+                                <div class="patience-track">
+                                    <div class="patience-fill"></div>
+                                </div>
+
+                                <span class="patience-value">
+                                    100%
+                                </span>
+
+                            </div>
+
+                            <div class="table-status">
+                                Bloqueada
+                            </div>
+
+                        </article>
+
+
+                        <!-- ===============================
+                             MESA 6 — BLOQUEADA
+                        ================================ -->
+                        <article
+                            class="table-slot is-locked"
+                            data-table-id="6"
+                            data-table-state="locked"
+                            tabindex="-1"
+                            aria-label="Posição da Mesa 6, bloqueada"
+                        >
+
+                            <div class="table-number">
+                                Mesa 6
+                            </div>
+
+                            <div class="locked-table-placeholder">
+
+                                <span class="locked-icon">
+                                    🔒
+                                </span>
+
+                                <strong>
+                                    Espaço disponível
+                                </strong>
+
+                                <span>
+                                    Compre a Mesa 6 na loja
+                                </span>
+
+                            </div>
+
+                            <div class="order-bubble is-hidden">
+
+                                <strong class="order-recipe-name">
+                                    Pedido
+                                </strong>
+
+                                <div class="order-ingredients"></div>
+
+                                <span class="order-time-hint">
+                                    Pontuação total por 10 segundos
+                                </span>
+
+                            </div>
+
+                            <div class="customer-layer"></div>
+
+                            <img
+                                src="img/furniture/mesa.png"
+                                class="table-image"
+                                alt="Mesa redonda da cafeteria"
+                            >
+
+                            <div class="customer-patience is-hidden">
+
+                                <div class="patience-track">
+                                    <div class="patience-fill"></div>
+                                </div>
+
+                                <span class="patience-value">
+                                    100%
+                                </span>
+
+                            </div>
+
+                            <div class="table-status">
+                                Bloqueada
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     BALCÃO
+                ========================================== -->
+                <div class="counter">
+
+                    <div class="barista-area">
+
+                        <img
+                            src="img/characters/barista.png"
+                            class="barista-image"
+                            alt="Barista"
+                        >
+
+                        <div class="barista-message" id="baristaMessage">
+                            Selecione uma mesa com pedido.
+                        </div>
+
+                    </div>
+
+
+                    <div class="selected-order-panel">
+
+                        <span class="small-label">
+                            Pedido selecionado
+                        </span>
+
+                        <strong id="selectedTableLabel">
+                            Nenhuma mesa selecionada
+                        </strong>
+
+                        <span id="selectedRecipeLabel">
+                            Clique em uma mesa ocupada para atender.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
 
         </main>
-        </main>
 
-        <!-- Rodapé -->
-        <footer class="bottom">
 
-            <div class="recipe">
+        <!-- =================================================
+             ESTAÇÃO DE PREPARO
+        ================================================== -->
+        <section
+            class="preparation-panel"
+            aria-labelledby="preparationTitle"
+        >
 
-                <h3>Receita</h3>
+            <div class="preparation-header">
 
-                <div class="recipe-items">
-                    <span>☕</span>
-                    <span>🥛</span>
-                    <span>🍫</span>
+                <div>
+                    <span class="small-label">
+                        Estação de trabalho
+                    </span>
+
+                    <h2 id="preparationTitle">
+                        Preparar bebida
+                    </h2>
+                </div>
+
+                <div class="preparation-limit">
+                    Ingredientes:
+                    <strong id="preparationCount">0</strong>/6
                 </div>
 
             </div>
 
-            <button class="serve">
-                Servir
-            </button>
 
-        </footer>
+            <div class="preparation-content">
+
+                <!-- Ingredientes disponíveis -->
+                <div class="ingredients-panel">
+
+                    <span class="section-label">
+                        Ingredientes
+                    </span>
+
+                    <div class="ingredient-buttons">
+
+                        <button
+                            class="ingredient-button"
+                            type="button"
+                            data-ingredient="cafe"
+                            data-unlock-level="1"
+                            aria-label="Adicionar café"
+                            title="Café"
+                        >
+                            <span class="ingredient-icon">☕</span>
+                            <span class="ingredient-name">Café</span>
+                        </button>
+
+                        <button
+                            class="ingredient-button"
+                            type="button"
+                            data-ingredient="leite"
+                            data-unlock-level="1"
+                            aria-label="Adicionar leite"
+                            title="Leite"
+                        >
+                            <span class="ingredient-icon">🥛</span>
+                            <span class="ingredient-name">Leite</span>
+                        </button>
+
+                        <button
+                            class="ingredient-button is-locked"
+                            type="button"
+                            data-ingredient="acucar"
+                            data-unlock-level="2"
+                            aria-label="Açúcar bloqueado até o nível 2"
+                            title="Açúcar"
+                            disabled
+                        >
+                            <span class="ingredient-icon">🍬</span>
+                            <span class="ingredient-name">Açúcar</span>
+                            <span class="ingredient-lock">🔒 2</span>
+                        </button>
+
+                        <button
+                            class="ingredient-button is-locked"
+                            type="button"
+                            data-ingredient="canela"
+                            data-unlock-level="2"
+                            aria-label="Canela bloqueada até o nível 2"
+                            title="Canela"
+                            disabled
+                        >
+                            <span class="ingredient-icon">🌿</span>
+                            <span class="ingredient-name">Canela</span>
+                            <span class="ingredient-lock">🔒 2</span>
+                        </button>
+
+                        <button
+                            class="ingredient-button is-locked"
+                            type="button"
+                            data-ingredient="chocolate"
+                            data-unlock-level="3"
+                            aria-label="Chocolate bloqueado até o nível 3"
+                            title="Chocolate"
+                            disabled
+                        >
+                            <span class="ingredient-icon">🍫</span>
+                            <span class="ingredient-name">Chocolate</span>
+                            <span class="ingredient-lock">🔒 3</span>
+                        </button>
+
+                        <button
+                            class="ingredient-button is-locked"
+                            type="button"
+                            data-ingredient="chantilly"
+                            data-unlock-level="3"
+                            aria-label="Chantilly bloqueado até o nível 3"
+                            title="Chantilly"
+                            disabled
+                        >
+                            <span class="ingredient-icon">🍦</span>
+                            <span class="ingredient-name">Chantilly</span>
+                            <span class="ingredient-lock">🔒 3</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Bebida em preparo -->
+                <div class="current-preparation">
+
+                    <span class="section-label">
+                        Bebida em preparo
+                    </span>
+
+                    <div
+                        class="preparation-cup"
+                        aria-hidden="true"
+                    >
+                        ☕
+                    </div>
+
+                    <div
+                        class="selected-ingredients"
+                        id="selectedIngredients"
+                        aria-live="polite"
+                    >
+                        <span class="empty-preparation">
+                            Nenhum ingrediente adicionado
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- Botões de ação -->
+                <div class="preparation-actions">
+
+                    <button
+                        class="action-button undo-button"
+                        id="undoIngredientBtn"
+                        type="button"
+                    >
+                        ↩ Desfazer
+                    </button>
+
+                    <button
+                        class="action-button clear-button"
+                        id="clearPreparationBtn"
+                        type="button"
+                    >
+                        🗑 Limpar
+                    </button>
+
+                    <button
+                        class="action-button serve-button"
+                        id="serveBtn"
+                        type="button"
+                    >
+                        ✅ Servir
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
 
     </div>
 
-    <script src="js/script.js"></script>
+
+    <!-- =====================================================
+         MODAL DE INÍCIO DO DIA
+    ====================================================== -->
+    <section
+        class="modal is-hidden"
+        id="dayStartModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dayStartTitle"
+    >
+        <div class="modal-card small-modal">
+
+            <span class="modal-icon" aria-hidden="true">
+                🌅
+            </span>
+
+            <h2 id="dayStartTitle">
+                Dia <span id="dayStartNumber">1</span>
+            </h2>
+
+            <p>
+                Prepare-se para atender os clientes e manter
+                a cafeteria organizada.
+            </p>
+
+            <div class="day-objectives">
+
+                <span>⏱ Expediente de 2 minutos</span>
+                <span>👥 Fila máxima de 3 clientes</span>
+                <span>✨ Limpe as sujeiras rapidamente</span>
+
+            </div>
+
+            <button
+                class="primary-button"
+                id="beginDayBtn"
+                type="button"
+            >
+                Iniciar expediente
+            </button>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         LOJA
+    ====================================================== -->
+    <section
+        class="modal is-hidden"
+        id="shopModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shopTitle"
+    >
+        <div class="modal-card shop-modal-card">
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="small-label">
+                        Melhorias da cafeteria
+                    </span>
+
+                    <h2 id="shopTitle">
+                        Loja de mesas
+                    </h2>
+                </div>
+
+                <button
+                    class="modal-close-button"
+                    id="closeShopBtn"
+                    type="button"
+                    aria-label="Fechar loja"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <div class="shop-balance">
+                Seu saldo:
+                <strong>
+                    🪙 <span id="shopCoinsValue">0</span>
+                </strong>
+            </div>
+
+
+            <div class="shop-items">
+
+                <article
+                    class="shop-item"
+                    data-shop-table-id="4"
+                >
+                    <img
+                        src="img/furniture/mesa.png"
+                        alt="Mesa 4"
+                    >
+
+                    <div class="shop-item-info">
+
+                        <h3>
+                            Mesa 4
+                        </h3>
+
+                        <p>
+                            Adiciona mais um lugar para atender clientes.
+                        </p>
+
+                        <span class="shop-price">
+                            🪙 80
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="buy-table-button"
+                        type="button"
+                        data-buy-table="4"
+                        data-price="80"
+                    >
+                        Comprar
+                    </button>
+
+                </article>
+
+
+                <article
+                    class="shop-item"
+                    data-shop-table-id="5"
+                >
+                    <img
+                        src="img/furniture/mesa.png"
+                        alt="Mesa 5"
+                    >
+
+                    <div class="shop-item-info">
+
+                        <h3>
+                            Mesa 5
+                        </h3>
+
+                        <p>
+                            Aumenta novamente a capacidade da cafeteria.
+                        </p>
+
+                        <span class="shop-price">
+                            🪙 150
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="buy-table-button"
+                        type="button"
+                        data-buy-table="5"
+                        data-price="150"
+                        disabled
+                    >
+                        Compre a Mesa 4 primeiro
+                    </button>
+
+                </article>
+
+
+                <article
+                    class="shop-item"
+                    data-shop-table-id="6"
+                >
+                    <img
+                        src="img/furniture/mesa.png"
+                        alt="Mesa 6"
+                    >
+
+                    <div class="shop-item-info">
+
+                        <h3>
+                            Mesa 6
+                        </h3>
+
+                        <p>
+                            Libera a capacidade máxima da cafeteria.
+                        </p>
+
+                        <span class="shop-price">
+                            🪙 250
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="buy-table-button"
+                        type="button"
+                        data-buy-table="6"
+                        data-price="250"
+                        disabled
+                    >
+                        Compre a Mesa 5 primeiro
+                    </button>
+
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         PAUSA
+    ====================================================== -->
+    <section
+        class="modal is-hidden"
+        id="pauseModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pauseTitle"
+    >
+        <div class="modal-card small-modal">
+
+            <span class="modal-icon" aria-hidden="true">
+                ⏸
+            </span>
+
+            <h2 id="pauseTitle">
+                Jogo pausado
+            </h2>
+
+            <p>
+                O tempo, os clientes e as sujeiras estão parados.
+            </p>
+
+            <div class="modal-button-group">
+
+                <button
+                    class="primary-button"
+                    id="resumeBtn"
+                    type="button"
+                >
+                    Continuar
+                </button>
+
+                <button
+                    class="secondary-button"
+                    id="openShopFromPauseBtn"
+                    type="button"
+                >
+                    Abrir loja
+                </button>
+
+                <button
+                    class="danger-button"
+                    id="resetProgressBtn"
+                    type="button"
+                >
+                    Apagar progresso
+                </button>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         RESUMO DO DIA
+    ====================================================== -->
+    <section
+        class="modal is-hidden"
+        id="daySummaryModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="daySummaryTitle"
+    >
+        <div class="modal-card summary-modal-card">
+
+            <span class="modal-icon" aria-hidden="true">
+                🌙
+            </span>
+
+            <h2 id="daySummaryTitle">
+                Expediente encerrado
+            </h2>
+
+            <p>
+                Confira os resultados do dia.
+            </p>
+
+            <div class="summary-grid">
+
+                <div class="summary-item">
+                    <span>Clientes atendidos</span>
+                    <strong id="summaryServedCustomers">0</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Clientes perdidos</span>
+                    <strong id="summaryLostCustomers">0</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Pontos ganhos</span>
+                    <strong id="summaryScore">0</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Moedas ganhas</span>
+                    <strong id="summaryCoins">0</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Sujeiras limpas</span>
+                    <strong id="summaryCleanedDirt">0</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Satisfação final</span>
+                    <strong id="summarySatisfaction">100%</strong>
+                </div>
+
+            </div>
+
+            <div class="modal-button-group horizontal-buttons">
+
+                <button
+                    class="secondary-button"
+                    id="summaryShopBtn"
+                    type="button"
+                >
+                    🛒 Ir para a loja
+                </button>
+
+                <button
+                    class="primary-button"
+                    id="nextDayBtn"
+                    type="button"
+                >
+                    Próximo dia
+                </button>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         SUBIDA DE NÍVEL
+    ====================================================== -->
+    <section
+        class="modal is-hidden"
+        id="levelUpModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="levelUpTitle"
+    >
+        <div class="modal-card small-modal level-up-card">
+
+            <span class="modal-icon" aria-hidden="true">
+                ⭐
+            </span>
+
+            <h2 id="levelUpTitle">
+                Novo nível!
+            </h2>
+
+            <p>
+                Você chegou ao nível
+                <strong id="newLevelValue">2</strong>.
+            </p>
+
+            <div
+                class="unlock-list"
+                id="unlockList"
+            ></div>
+
+            <button
+                class="primary-button"
+                id="closeLevelUpBtn"
+                type="button"
+            >
+                Continuar
+            </button>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         FIM DE JOGO
+    ====================================================== -->
+    <section
+        class="modal is-hidden"
+        id="gameOverModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="gameOverTitle"
+    >
+        <div class="modal-card small-modal game-over-card">
+
+            <span class="modal-icon" aria-hidden="true">
+                😞
+            </span>
+
+            <h2 id="gameOverTitle">
+                A cafeteria perdeu a reputação
+            </h2>
+
+            <p>
+                A satisfação chegou a zero.
+                O progresso permanente foi preservado.
+            </p>
+
+            <div class="game-over-score">
+                Pontuação total:
+                <strong id="gameOverScore">0</strong>
+            </div>
+
+            <button
+                class="primary-button"
+                id="restartGameBtn"
+                type="button"
+            >
+                Recomeçar o dia
+            </button>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         CONFIRMAÇÃO PARA APAGAR PROGRESSO
+    ====================================================== -->
+    <section
+        class="modal is-hidden"
+        id="resetConfirmationModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resetConfirmationTitle"
+    >
+        <div class="modal-card small-modal">
+
+            <span class="modal-icon" aria-hidden="true">
+                ⚠️
+            </span>
+
+            <h2 id="resetConfirmationTitle">
+                Apagar todo o progresso?
+            </h2>
+
+            <p>
+                Essa ação apagará moedas, nível, pontuação,
+                mesas compradas e recordes.
+            </p>
+
+            <div class="modal-button-group horizontal-buttons">
+
+                <button
+                    class="secondary-button"
+                    id="cancelResetBtn"
+                    type="button"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    class="danger-button"
+                    id="confirmResetBtn"
+                    type="button"
+                >
+                    Apagar
+                </button>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         AVISOS E FEEDBACKS
+    ====================================================== -->
+    <div
+        class="toast-container"
+        id="toastContainer"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
 
 </body>
 

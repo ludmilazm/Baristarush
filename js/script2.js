@@ -21,16 +21,16 @@ const CONFIG = Object.freeze({
     DIRT_OLD_AFTER_SECONDS: 12,
     DIRT_PENALTY_INTERVAL_SECONDS: 3,
     TABLE_PRICES: Object.freeze({
-        4: 500,
-        5: 1500,
-        6: 3000
+        4: 80,
+        5: 150,
+        6: 250
     }),
     LEVEL_THRESHOLDS: Object.freeze([
         { level: 1, score: 0 },
-        { level: 2, score: 1500 },
-        { level: 3, score: 4000 },
-        { level: 4, score: 8000 },
-        { level: 5, score: 14000 }
+        { level: 2, score: 500 },
+        { level: 3, score: 1200 },
+        { level: 4, score: 2200 },
+        { level: 5, score: 3500 }
     ])
 });
 
@@ -40,9 +40,7 @@ const INGREDIENTS = Object.freeze({
     acucar: Object.freeze({ name: 'Açúcar', icon: '🍬', unlockLevel: 2 }),
     canela: Object.freeze({ name: 'Canela', icon: '🌿', unlockLevel: 2 }),
     chocolate: Object.freeze({ name: 'Chocolate', icon: '🍫', unlockLevel: 3 }),
-    chantilly: Object.freeze({ name: 'Chantilly', icon: '🍦', unlockLevel: 3 }),
-    caramelo: Object.freeze({ name: 'Caramelo', icon: '🍯', unlockLevel: 4 }),
-    baunilha: Object.freeze({ name: 'Baunilha', icon: '🌼', unlockLevel: 4 })
+    chantilly: Object.freeze({ name: 'Chantilly', icon: '🍦', unlockLevel: 3 })
 });
 
 const RECIPES = Object.freeze([
@@ -133,30 +131,6 @@ const RECIPES = Object.freeze([
         unlockLevel: 4,
         price: 30,
         basePoints: 300
-    }),
-    Object.freeze({
-        id: 'latte-caramelizado',
-        name: 'Latte caramelizado',
-        ingredients: ['cafe', 'leite', 'caramelo'],
-        unlockLevel: 4,
-        price: 34,
-        basePoints: 340
-    }),
-    Object.freeze({
-        id: 'cafe-de-baunilha',
-        name: 'Café de baunilha',
-        ingredients: ['cafe', 'leite', 'baunilha'],
-        unlockLevel: 4,
-        price: 34,
-        basePoints: 340
-    }),
-    Object.freeze({
-        id: 'especial-do-barista',
-        name: 'Especial do barista',
-        ingredients: ['cafe', 'leite', 'caramelo', 'baunilha', 'chantilly'],
-        unlockLevel: 5,
-        price: 48,
-        basePoints: 480
     })
 ]);
 
@@ -187,142 +161,39 @@ const CHARACTERS = Object.freeze([
     })
 ]);
 
-const SOUNDS = Object.freeze({
-    menu: new Audio('audios/ambientes/menu.mp3'),
-    jogo: new Audio('audios/ambientes/mainJazz.mp3'),
-    click: new Audio('audios/click.mp3'),
-    limpar: new Audio('audios/catandoLixo.mp3'),
-    nivel: new Audio('audios/bonusPoints.mp3'),
-    perdeu: new Audio('audios/deathSound.mp3'),
-    diaFinalizado: new Audio('audios/ganhou.mp3'),
-    andando: new Audio('audios/andando.mp3'),
-    pagou: new Audio('audios/applePaySucces.mp3'),
-    servir: new Audio('audios/servir.mp3'),
-    erro: new Audio('audios/error-126627.mp3'),
-    popUp: new Audio('audios/popUp.mp3'),
-    moedinhas: new Audio('audios/moedinhasSuccess.mp3'),
-    clienteDesistiu: new Audio('audios/universsfield-fail-trumpet-144746.mp3')
-});
+const SOUNDS = {
+    menu: new Audio("audios/ambientes/menu.mp3"),
+    jogo: new Audio("audios/ambientes/mainJazz.mp3"),
+    click: new Audio("audios/click.mp3"),
+    limpar: new Audio("audios/catandoLixo.mp3"),
+    ganhou: new Audio("audios/bonusPoints.mp3"),
+    perdeu: new Audio("audios/deathSound.mp3"),
+    passouNivel: new Audio("audios/ganhou.mp3"),
+    andando: new Audio("audios/andando.mp3"),
+    pagou: new Audio("audios/applePaySucces.mp3"),
+    servir: new Audio("audios/servir.mp3"),
+    erro: new Audio("audios/error-126627.mp3"),
+    popUp: new Audio("audios/popUp.mp3"),
+    moedinhas: new Audio("audios/moedinhasSuccess.mp3"),
+    clienteDesistiu: new Audio("audios/universsfield-fail-trumpet-144746.mp3")
+};
 
-const ALL_SOUNDS = Object.freeze(Object.values(SOUNDS));
+SOUNDS.menu.loop = true; SOUNDS.jogo.loop = true;
 
-SOUNDS.menu.loop = true;
-SOUNDS.jogo.loop = true;
-
-SOUNDS.menu.volume = 1;
-SOUNDS.jogo.volume = 0.03;
-SOUNDS.limpar.volume = 0.5;
-SOUNDS.click.volume = 0.5;
-SOUNDS.popUp.volume = 0.4;
+SOUNDS.menu.volume = 1; SOUNDS.jogo.volume = 0.03;
+SOUNDS.limpar.volume = 0.5; 
+SOUNDS.click.volume = 0.5; SOUNDS.popUp.volume = 0.4;
 SOUNDS.andando.volume = 0.6;
 SOUNDS.moedinhas.volume = 0.05;
-SOUNDS.diaFinalizado.volume = 0.5;
-SOUNDS.nivel.volume = 0.5;
+SOUNDS.passouNivel.volume = 0.5;
 
-function playSound(sound, restart = true) {
-    if (!sound || progress.soundMuted) {
-        return;
-    }
-
-    if (restart) {
-        sound.currentTime = 0;
-    }
-
-    sound.play().catch(() => {});
-}
-
-function playSoundInstance(sound) {
-    if (!sound || progress.soundMuted) {
-        return null;
-    }
-
-    const soundInstance = sound.cloneNode();
-    soundInstance.volume = sound.volume;
-    soundInstance.muted = false;
-    soundInstance.currentTime = 0;
-    soundInstance.play().catch(() => {});
-
-    return soundInstance;
-}
-
-function playBackgroundMusic(sound, restart = false) {
-    if (!sound || progress.soundMuted) {
-        return;
-    }
-
-    if (restart) {
-        sound.currentTime = 0;
-    }
-
-    sound.play().catch(() => {});
-}
-
-function stopSound(sound, reset = false) {
+function playSound(sound) {
     if (!sound) {
         return;
     }
 
-    sound.pause();
-
-    if (reset) {
-        sound.currentTime = 0;
-    }
-}
-
-function stopBackgroundMusic(reset = false) {
-    stopSound(SOUNDS.menu, reset);
-    stopSound(SOUNDS.jogo, reset);
-}
-
-function applySoundPreference() {
-    for (const sound of ALL_SOUNDS) {
-        sound.muted = progress.soundMuted;
-    }
-
-    updateSoundButtons();
-}
-
-function updateSoundButtons() {
-    if (!dom.soundToggleButtons) {
-        return;
-    }
-
-    for (const button of dom.soundToggleButtons) {
-        const muted = progress.soundMuted;
-        button.textContent = muted ? '🔇 Mudo' : '🔊 Som';
-        button.setAttribute(
-            'aria-label',
-            muted ? 'Ativar sons do jogo' : 'Silenciar sons do jogo'
-        );
-        button.setAttribute('aria-pressed', String(muted));
-    }
-}
-
-function toggleSound() {
-    const wasMuted = progress.soundMuted;
-
-    if (!wasMuted) {
-        playSound(SOUNDS.click);
-    }
-
-    progress.soundMuted = !progress.soundMuted;
-    applySoundPreference();
-    saveProgress();
-
-    if (progress.soundMuted) {
-        stopBackgroundMusic(false);
-        return;
-    }
-
-    if (runtime.dayActive && !runtime.paused) {
-        playBackgroundMusic(SOUNDS.jogo);
-    } else {
-        playBackgroundMusic(SOUNDS.menu);
-    }
-
-    if (wasMuted) {
-        playSound(SOUNDS.click);
-    }
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
 }
 
 const DIRT_TYPES = Object.freeze(['coffee', 'crumbs', 'napkin', 'stain']);
@@ -350,8 +221,7 @@ const DEFAULT_PROGRESS = Object.freeze({
     bestScore: 0,
     bestLevel: 1,
     day: 1,
-    unlockedTables: 3,
-    soundMuted: false
+    unlockedTables: 3
 });
 
 let progress = loadProgress();
@@ -402,7 +272,6 @@ requestAnimationFrame(gameLoop);
 function cacheDom() {
     dom.splashScreen = document.getElementById('splashScreen');
     dom.startBtn = document.getElementById('startBtn');
-    dom.soundToggleButtons = [...document.querySelectorAll('[data-sound-toggle]')];
 
     dom.dayValue = document.getElementById('dayValue');
     dom.levelValue = document.getElementById('levelValue');
@@ -447,7 +316,6 @@ function cacheDom() {
     dom.pauseModal = document.getElementById('pauseModal');
     dom.resumeBtn = document.getElementById('resumeBtn');
     dom.openShopFromPauseBtn = document.getElementById('openShopFromPauseBtn');
-    dom.returnToMenuBtn = document.getElementById('returnToMenuBtn');
     dom.resetProgressBtn = document.getElementById('resetProgressBtn');
 
     dom.daySummaryModal = document.getElementById('daySummaryModal');
@@ -492,18 +360,12 @@ function initializeTables() {
 
 function bindEvents() {
     dom.startBtn.addEventListener('click', handleStartButton);
-
-    for (const button of dom.soundToggleButtons) {
-        button.addEventListener('click', toggleSound);
-    }
-
     dom.beginDayBtn.addEventListener('click', () => { playSound(SOUNDS.click); beginDay(); });
 
     dom.shopBtn.addEventListener('click', () => { playSound(SOUNDS.click); openShop('running'); });
     dom.pauseBtn.addEventListener('click', () => { playSound(SOUNDS.click); pauseGame(); });
     dom.resumeBtn.addEventListener('click', () => { playSound(SOUNDS.click); resumeGame(); });
     dom.openShopFromPauseBtn.addEventListener('click', () => { playSound(SOUNDS.click); openShop('pause'); });
-    dom.returnToMenuBtn.addEventListener('click', () => { playSound(SOUNDS.click); returnToMainMenu(); });
     dom.closeShopBtn.addEventListener('click', () => { playSound(SOUNDS.click); closeShop(); });
     dom.summaryShopBtn.addEventListener('click', () => { playSound(SOUNDS.click); openShop('summary'); });
 
@@ -610,8 +472,7 @@ function loadProgress() {
                 nonNegativeInteger(parsed.unlockedTables, 3),
                 CONFIG.INITIAL_TABLES,
                 CONFIG.MAX_TABLES
-            ),
-            soundMuted: Boolean(parsed.soundMuted)
+            )
         };
     } catch (error) {
         console.warn('Não foi possível carregar o progresso salvo.', error);
@@ -646,8 +507,7 @@ function resetAllProgress() {
 ========================================================= */
 
 function handleStartButton() {
-    playSound(SOUNDS.click);
-    playBackgroundMusic(SOUNDS.menu);
+    SOUNDS.menu.play();
     runtime.appStarted = true;
     dom.splashScreen.classList.add('hidden');
 
@@ -662,8 +522,9 @@ function prepareDayStartModal() {
 }
 
 function beginDay() {
-    stopSound(SOUNDS.menu, true);
-    playBackgroundMusic(SOUNDS.jogo, true);
+    SOUNDS.menu.pause();
+    SOUNDS.menu.currentTime = 0;
+    SOUNDS.jogo.play();
 
     hideModal(dom.dayStartModal);
     resetDayRuntime();
@@ -712,7 +573,7 @@ function pauseGame() {
     }
 
     runtime.paused = true;
-    stopSound(SOUNDS.jogo, false);
+    SOUNDS.jogo.pause();
     showModal(dom.pauseModal);
 }
 
@@ -723,7 +584,7 @@ function resumeGame() {
 
     hideModal(dom.pauseModal);
     runtime.paused = false;
-    playBackgroundMusic(SOUNDS.jogo);
+    SOUNDS.jogo.play();
     assignQueueToAvailableTables();
 }
 
@@ -732,7 +593,8 @@ function endDay() {
         return;
     }
 
-    stopSound(SOUNDS.jogo, true);
+    SOUNDS.jogo.pause();
+    SOUNDS.jogo.currentTime = 0;
 
     runtime.dayActive = false;
     runtime.paused = true;
@@ -746,7 +608,7 @@ function endDay() {
     saveProgress();
     fillDaySummary();
     updateHud();
-    playSound(SOUNDS.diaFinalizado);
+    playSound(SOUNDS.passouNivel);
     showModal(dom.daySummaryModal);
 }
 
@@ -765,7 +627,6 @@ function goToNextDay() {
     saveProgress();
     applyProgressToInterface();
     prepareDayStartModal();
-    playBackgroundMusic(SOUNDS.menu, true);
     showModal(dom.dayStartModal);
 }
 
@@ -773,37 +634,13 @@ function restartCurrentDay() {
     hideModal(dom.gameOverModal);
     runtime.gameOver = false;
     prepareDayStartModal();
-    playBackgroundMusic(SOUNDS.menu, true);
     showModal(dom.dayStartModal);
-}
-
-function returnToMainMenu() {
-    stopBackgroundMusic(true);
-
-    runtime.appStarted = false;
-    runtime.dayActive = false;
-    runtime.paused = true;
-    runtime.gameOver = false;
-
-    for (const modal of document.querySelectorAll('.modal')) {
-        hideModal(modal);
-    }
-
-    resetDayRuntime();
-    saveProgress();
-    updateHud();
-    setBaristaMessage('Selecione uma mesa com pedido.');
-
-    dom.splashScreen.classList.remove('hidden');
-    playBackgroundMusic(SOUNDS.menu, true);
 }
 
 function triggerGameOver() {
     if (runtime.gameOver) {
         return;
     }
-
-    stopBackgroundMusic(true);
 
     runtime.gameOver = true;
     runtime.dayActive = false;
@@ -1003,19 +840,17 @@ function seatCustomerWithAnimation(customer, table) {
     movingImage.style.left = `${startLeft}px`;
     movingImage.style.top = `${startTop}px`;
     dom.movementLayer.appendChild(movingImage);
-    const walkingSound = playSoundInstance(SOUNDS.andando);
+    playSound(SOUNDS.andando);
     requestAnimationFrame(() => {
         movingImage.style.left = `${targetLeft}px`;
         movingImage.style.top = `${targetTop}px`;
     });
 
     window.setTimeout(() => {
-    if (walkingSound) {
-        walkingSound.pause();
-        walkingSound.currentTime = 0;
-    }
+        movingImage.remove();
 
-    movingImage.remove();
+        SOUNDS.andando.pause();
+        SOUNDS.andando.currentTime = 0; 
 
         if (!runtime.dayActive || !runtime.customers.has(customer.id)) {
             table.reserved = false;
@@ -1623,8 +1458,7 @@ function calculateLevelFromScore(score) {
 
 function showLevelUp(previousLevel, newLevel) {
     runtime.paused = true;
-    stopSound(SOUNDS.jogo, false);
-    playSound(SOUNDS.nivel);
+    playSound(SOUNDS.ganhou);
     dom.newLevelValue.textContent = String(newLevel);
     dom.unlockList.replaceChildren();
 
@@ -1646,7 +1480,6 @@ function closeLevelUpModal() {
 
     if (runtime.dayActive && !runtime.gameOver) {
         runtime.paused = false;
-        playBackgroundMusic(SOUNDS.jogo);
         assignQueueToAvailableTables();
     }
 }
@@ -1703,7 +1536,6 @@ function openShop(context) {
         }
 
         runtime.paused = true;
-        stopSound(SOUNDS.jogo, false);
     }
 
     if (context === 'pause') {
@@ -1734,7 +1566,6 @@ function closeShop() {
 
     if (runtime.shopReturnContext === 'running' && runtime.dayActive) {
         runtime.paused = false;
-        playBackgroundMusic(SOUNDS.jogo);
         assignQueueToAvailableTables();
     }
 }
@@ -1742,7 +1573,7 @@ function closeShop() {
 function handleBuyTable(event) {
     const button = event.currentTarget;
     const tableId = Number(button.dataset.buyTable);
-    const price = CONFIG.TABLE_PRICES[tableId];
+    const price = Number(button.dataset.price);
 
     if (!Number.isInteger(tableId) || !Number.isFinite(price)) {
         return;
@@ -1786,12 +1617,7 @@ function updateShopInterface() {
     for (const item of document.querySelectorAll('.shop-item')) {
         const tableId = Number(item.dataset.shopTableId);
         const button = item.querySelector('.buy-table-button');
-        const priceLabel = item.querySelector('.shop-price');
         const price = CONFIG.TABLE_PRICES[tableId];
-
-        if (priceLabel) {
-            priceLabel.textContent = `🪙 ${price.toLocaleString('pt-BR')}`;
-        }
 
         item.classList.remove('is-purchased');
         button.classList.remove('is-purchased');
@@ -1913,7 +1739,8 @@ function cleanDirt(dirtId) {
     addScore(earnedScore);
     changeSatisfaction(dirt.old ? 2 : 1);
 
-    playSound(SOUNDS.limpar);
+    SOUNDS.limpar.currentTime = 0;
+    SOUNDS.limpar.play();
 
     dirt.element.classList.add('is-cleaning');
     runtime.dirtItems.delete(dirtId);
@@ -1947,7 +1774,6 @@ function applyProgressToInterface() {
     updateCoinDisplays();
     updateIngredientUnlocks();
     updateShopInterface();
-    applySoundPreference();
 
     for (const table of runtime.tables.values()) {
         table.unlocked = table.id <= progress.unlockedTables;

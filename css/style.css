@@ -2734,3 +2734,818 @@ button:disabled {
         transition-duration: 0.01ms !important;
     }
 }
+/* =========================================================
+   MELHORIAS — TELA INICIAL, SOM E LAYOUT SEM ROLAGEM
+========================================================= */
+
+/* Links que utilizam a aparência dos botões */
+a.secondary-button,
+a.primary-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.splash-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.tutorial-button,
+.sound-toggle-button {
+    min-height: 48px;
+    padding: 11px 22px;
+    border-radius: var(--border-radius-medium);
+    font-weight: 800;
+}
+
+.sound-toggle-button {
+    cursor: pointer;
+    user-select: none;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    transition:
+        transform 0.18s ease,
+        background-color 0.18s ease,
+        color 0.18s ease,
+        opacity 0.18s ease;
+}
+
+.sound-toggle-button:hover {
+    color: var(--coffee-dark);
+    background: #fff3d4;
+    transform: translateY(-2px);
+}
+
+.sound-toggle-button.is-muted,
+.sound-toggle-button[aria-pressed="true"] {
+    color: #fff1f1;
+    background: rgba(177, 55, 55, 0.72);
+    border-color: rgba(255, 213, 213, 0.78);
+}
+
+.splash-sound-button {
+    min-width: 132px;
+}
+
+.home-button {
+    border-color: var(--blue-dark);
+    color: var(--blue-dark);
+}
+
+.home-button:hover {
+    color: #ffffff;
+    background: var(--blue-dark);
+}
+
+/* =========================================================
+   JOGO EM UMA ÚNICA TELA — REFERÊNCIA 1366 x 768
+========================================================= */
+
+body:not(.tutorial-page) {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.game-app {
+    width: min(1480px, 100%);
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+
+    overflow: hidden;
+}
+
+.hud {
+    min-height: 72px;
+    height: 72px;
+
+    grid-template-columns:
+        minmax(365px, 1.18fr)
+        minmax(235px, 0.8fr)
+        minmax(415px, 1.12fr);
+
+    gap: 12px;
+    padding: 7px 16px;
+}
+
+.hud-group {
+    gap: 6px;
+}
+
+.hud-item {
+    min-width: 70px;
+    min-height: 50px;
+    padding: 5px 9px;
+}
+
+.hud-item-score {
+    min-width: 94px;
+}
+
+.hud-item-coins {
+    min-width: 104px;
+}
+
+.hud-item strong {
+    font-size: 1.12rem;
+}
+
+.hud-actions {
+    gap: 7px;
+}
+
+.day-timer {
+    min-width: 96px;
+    min-height: 43px;
+    padding: 6px 10px;
+}
+
+.day-timer strong {
+    font-size: 1.08rem;
+}
+
+.hud-button {
+    min-height: 43px;
+    padding: 7px 11px;
+    white-space: nowrap;
+    font-size: 0.82rem;
+}
+
+.hud .sound-toggle-button {
+    min-height: 43px;
+    padding: 7px 11px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+.game-main {
+    min-height: 0;
+    overflow: hidden;
+    grid-template-columns: 190px minmax(0, 1fr);
+}
+
+.queue-panel {
+    min-height: 0;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px 10px 9px;
+}
+
+.panel-title h2 {
+    font-size: 1.08rem;
+}
+
+.queue-description {
+    margin: 6px 0 8px;
+    font-size: 0.72rem;
+}
+
+.queue-list {
+    flex: 1;
+    min-height: 0;
+
+    display: grid;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+}
+
+.queue-slot {
+    min-height: 0;
+    height: auto;
+    border-width: 2px;
+}
+
+.queue-customer {
+    width: 53px;
+    max-height: 92px;
+}
+
+.queue-warning {
+    flex: 0 0 auto;
+    margin-top: 8px;
+    padding: 7px 8px;
+    font-size: 0.68rem;
+}
+
+.cafeteria {
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.cafeteria-window {
+    flex: 0 0 45px;
+    height: 45px;
+    gap: 7px;
+    padding: 5px 12px;
+    border-bottom-width: 5px;
+}
+
+.window-panel {
+    border-width: 3px;
+}
+
+.window-panel::before {
+    width: 3px;
+}
+
+.window-panel::after {
+    height: 3px;
+}
+
+.cafeteria-floor {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.tables-grid {
+    height: 100%;
+    min-height: 0;
+
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 10px 26px;
+
+    padding: 11px 28px 10px;
+}
+
+.table-slot {
+    min-height: 0;
+    border-radius: 16px;
+}
+
+.table-number {
+    top: 1px;
+    padding: 3px 8px;
+    font-size: 0.64rem;
+}
+
+.table-image {
+    width: min(118px, 66%);
+    max-height: 126px;
+}
+
+.seated-customer {
+    right: 10%;
+    bottom: 19px;
+    width: 58px;
+    max-height: 116px;
+}
+
+.table-slot:nth-child(2n) .seated-customer {
+    left: 9%;
+}
+
+.order-bubble {
+    top: -3px;
+    right: -5px;
+    width: 142px;
+    min-height: 74px;
+    padding: 7px 8px;
+    border-width: 2px;
+    border-radius: 11px;
+}
+
+.order-bubble::after {
+    bottom: -9px;
+    width: 14px;
+    height: 14px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+}
+
+.order-recipe-name {
+    margin-bottom: 3px;
+    font-size: 0.72rem;
+}
+
+.order-ingredients {
+    min-height: 21px;
+    margin-bottom: 2px;
+    gap: 3px;
+}
+
+.order-ingredient-icon {
+    min-width: 21px;
+    height: 21px;
+    border-radius: 5px;
+    font-size: 0.82rem;
+}
+
+.order-time-hint {
+    font-size: 0.52rem;
+}
+
+.customer-patience {
+    right: 10%;
+    bottom: 0;
+    left: 10%;
+    gap: 5px;
+    padding: 3px 5px;
+    border-width: 1px;
+}
+
+.patience-track {
+    height: 7px;
+}
+
+.patience-value {
+    min-width: 28px;
+    font-size: 0.58rem;
+}
+
+.table-status {
+    bottom: 2px;
+    padding: 3px 8px;
+    font-size: 0.57rem;
+}
+
+.table-slot.is-occupied .table-status {
+    bottom: -5px;
+}
+
+.locked-table-placeholder {
+    inset: 19px 10px 11px;
+    padding: 8px;
+    border-width: 2px;
+    border-radius: 12px;
+}
+
+.locked-icon {
+    font-size: 1.15rem;
+}
+
+.locked-table-placeholder strong {
+    font-size: 0.68rem;
+}
+
+.locked-table-placeholder span:last-child {
+    font-size: 0.56rem;
+}
+
+.moving-customer {
+    width: 60px;
+    max-height: 112px;
+}
+
+.dirt-item {
+    width: 39px;
+    height: 35px;
+    font-size: 1.42rem;
+}
+
+.counter {
+    flex: 0 0 100px;
+    min-height: 100px;
+    height: 100px;
+
+    grid-template-columns: minmax(250px, 0.88fr) minmax(330px, 1.12fr);
+    gap: 15px;
+
+    padding: 8px 18px;
+    border-top-width: 6px;
+}
+
+.counter::after {
+    height: 14px;
+}
+
+.barista-area {
+    min-height: 78px;
+}
+
+.barista-image {
+    width: 78px;
+    max-height: 102px;
+}
+
+.barista-message {
+    margin-left: 90px;
+    padding: 8px 10px;
+    font-size: 0.7rem;
+}
+
+.selected-order-panel {
+    min-height: 63px;
+    padding: 8px 12px;
+}
+
+.selected-order-panel strong {
+    font-size: 0.87rem;
+}
+
+#selectedRecipeLabel {
+    font-size: 0.68rem;
+}
+
+.preparation-panel {
+    min-height: 0;
+    height: 166px;
+    padding: 7px 14px 9px;
+    border-top-width: 5px;
+}
+
+.preparation-header {
+    margin-bottom: 5px;
+}
+
+.preparation-header h2 {
+    font-size: 0.95rem;
+}
+
+.preparation-limit {
+    font-size: 0.68rem;
+}
+
+.preparation-content {
+    grid-template-columns:
+        minmax(640px, 1.5fr)
+        minmax(245px, 0.72fr)
+        minmax(145px, 0.38fr);
+
+    gap: 9px;
+}
+
+.ingredients-panel,
+.current-preparation,
+.preparation-actions {
+    padding: 7px;
+    border-radius: 10px;
+}
+
+.ingredients-panel,
+.current-preparation {
+    gap: 5px;
+}
+
+.ingredient-buttons {
+    grid-template-columns: repeat(8, minmax(55px, 1fr));
+    gap: 5px;
+}
+
+.ingredient-button {
+    min-height: 64px;
+    padding: 5px 3px;
+    gap: 2px;
+    border-radius: 9px;
+    box-shadow:
+        0 3px 0 #9d6534,
+        0 4px 6px rgba(17, 8, 4, 0.2);
+}
+
+.ingredient-icon {
+    font-size: 1.3rem;
+}
+
+.ingredient-name {
+    font-size: 0.57rem;
+}
+
+.ingredient-lock {
+    top: 2px;
+    right: 2px;
+    font-size: 0.48rem;
+}
+
+.current-preparation {
+    grid-template-columns: 48px 1fr;
+    column-gap: 6px;
+}
+
+.preparation-cup {
+    width: 45px;
+    height: 45px;
+    font-size: 1.7rem;
+}
+
+.selected-ingredients {
+    min-height: 47px;
+    padding: 5px;
+    gap: 4px;
+}
+
+.empty-preparation {
+    font-size: 0.62rem;
+}
+
+.selected-ingredient-chip {
+    min-width: 27px;
+    height: 27px;
+    border-radius: 7px;
+    font-size: 0.92rem;
+}
+
+.preparation-actions {
+    gap: 5px;
+}
+
+.action-button {
+    min-height: 31px;
+    padding: 5px 7px;
+    border-radius: 7px;
+    font-size: 0.67rem;
+}
+
+.serve-button {
+    min-height: 38px;
+    font-size: 0.78rem;
+}
+
+.toast-container {
+    top: 80px;
+}
+
+/* =========================================================
+   TELA DE TUTORIAL
+========================================================= */
+
+body.tutorial-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background:
+        radial-gradient(
+            circle at top,
+            #75482e 0%,
+            var(--coffee-darkest) 74%
+        );
+}
+
+.tutorial-shell {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 24px 0 38px;
+}
+
+.tutorial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+
+    margin-bottom: 20px;
+    padding: 18px 22px;
+
+    border: 3px solid rgba(255, 241, 209, 0.28);
+    border-radius: var(--border-radius-large);
+
+    color: #ffffff;
+    background: rgba(68, 37, 26, 0.94);
+    box-shadow: var(--shadow-large);
+}
+
+.tutorial-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.tutorial-brand-icon {
+    font-size: 3rem;
+}
+
+.tutorial-brand h1 {
+    margin-bottom: 3px;
+    color: #fff3cf;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.tutorial-brand p {
+    color: #ead7b5;
+    font-size: 0.9rem;
+}
+
+.tutorial-back-button {
+    flex-shrink: 0;
+}
+
+.tutorial-introduction,
+.tutorial-final-tip {
+    margin-bottom: 18px;
+    padding: 20px 22px;
+
+    border: 3px solid rgba(94, 51, 28, 0.24);
+    border-radius: var(--border-radius-large);
+
+    background: var(--panel-background);
+    box-shadow: var(--shadow-medium);
+}
+
+.tutorial-introduction h2,
+.tutorial-final-tip h2 {
+    margin-bottom: 8px;
+    color: var(--coffee-dark);
+}
+
+.tutorial-introduction p,
+.tutorial-final-tip p {
+    color: var(--text-medium);
+    line-height: 1.6;
+}
+
+.tutorial-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.tutorial-card {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    align-items: start;
+    gap: 14px;
+
+    padding: 18px;
+
+    border: 3px solid rgba(96, 51, 27, 0.2);
+    border-radius: var(--border-radius-large);
+
+    background: var(--panel-background);
+    box-shadow: var(--shadow-medium);
+}
+
+.tutorial-card-icon {
+    width: 56px;
+    height: 56px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 16px;
+    background: var(--cream-dark);
+    font-size: 1.8rem;
+}
+
+.tutorial-card h2 {
+    margin-bottom: 6px;
+    color: var(--coffee-dark);
+    font-size: 1.05rem;
+}
+
+.tutorial-card p {
+    color: var(--text-medium);
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+
+.tutorial-card strong {
+    color: var(--coffee-dark);
+}
+
+.tutorial-steps {
+    margin-top: 8px;
+    padding-left: 20px;
+    color: var(--text-medium);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.tutorial-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.tutorial-legend span {
+    padding: 5px 9px;
+    border-radius: 999px;
+    color: var(--coffee-dark);
+    background: var(--cream-dark);
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.tutorial-footer-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   AJUSTES PARA NOTEBOOKS COM ALTURA MENOR
+========================================================= */
+
+@media (max-height: 720px) and (min-width: 1100px) {
+    .hud {
+        min-height: 64px;
+        height: 64px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .hud-item {
+        min-height: 44px;
+    }
+
+    .cafeteria-window {
+        flex-basis: 38px;
+        height: 38px;
+    }
+
+    .counter {
+        flex-basis: 90px;
+        min-height: 90px;
+        height: 90px;
+    }
+
+    .barista-image {
+        width: 68px;
+        max-height: 88px;
+    }
+
+    .barista-message {
+        margin-left: 78px;
+    }
+
+    .preparation-panel {
+        height: 150px;
+        padding-top: 5px;
+        padding-bottom: 6px;
+    }
+
+    .ingredient-button {
+        min-height: 55px;
+    }
+
+    .ingredient-icon {
+        font-size: 1.12rem;
+    }
+
+    .selected-ingredient-chip {
+        min-width: 24px;
+        height: 24px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVIDADE COMPLEMENTAR
+========================================================= */
+
+@media (max-width: 1220px) {
+    body:not(.tutorial-page) {
+        overflow: auto;
+    }
+
+    .game-app {
+        width: 100%;
+        min-width: 1000px;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .hud {
+        height: auto;
+        min-height: 112px;
+    }
+
+    .game-main {
+        min-height: 520px;
+    }
+
+    .preparation-panel {
+        height: auto;
+        min-height: 170px;
+    }
+}
+
+@media (max-width: 760px) {
+    .tutorial-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .tutorial-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tutorial-card {
+        grid-template-columns: 48px minmax(0, 1fr);
+        padding: 15px;
+    }
+
+    .tutorial-card-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 1.45rem;
+    }
+}

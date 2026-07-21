@@ -46,13 +46,34 @@
                 Você aguenta o Rush Hour?
             </p>
 
-            <button
-                class="primary-button splash-button"
-                id="startBtn"
-                type="button"
-            >
-                Jogar
-            </button>
+            <div class="splash-actions">
+
+                <button
+                    class="primary-button splash-button"
+                    id="startBtn"
+                    type="button"
+                >
+                    Jogar
+                </button>
+
+                <a
+                    class="secondary-button tutorial-button"
+                    href="tutorial.html"
+                >
+                    📘 Tutorial
+                </a>
+
+                <button
+                    class="sound-toggle-button splash-sound-button"
+                    type="button"
+                    data-sound-toggle
+                    aria-label="Silenciar sons do jogo"
+                    aria-pressed="false"
+                >
+                    🔊 Som
+                </button>
+
+            </div>
 
             <div
                 class="splash-decorations"
@@ -156,6 +177,16 @@
                         02:00
                     </strong>
                 </div>
+
+                <button
+                    class="hud-button sound-toggle-button"
+                    type="button"
+                    data-sound-toggle
+                    aria-label="Silenciar sons do jogo"
+                    aria-pressed="false"
+                >
+                    🔊 Som
+                </button>
 
                 <button
                     class="hud-button"
@@ -851,6 +882,35 @@
                             <span class="ingredient-lock">🔒 3</span>
                         </button>
 
+
+                        <button
+                            class="ingredient-button is-locked"
+                            type="button"
+                            data-ingredient="caramelo"
+                            data-unlock-level="4"
+                            aria-label="Caramelo bloqueado até o nível 4"
+                            title="Caramelo"
+                            disabled
+                        >
+                            <span class="ingredient-icon">🍯</span>
+                            <span class="ingredient-name">Caramelo</span>
+                            <span class="ingredient-lock">🔒 4</span>
+                        </button>
+
+                        <button
+                            class="ingredient-button is-locked"
+                            type="button"
+                            data-ingredient="baunilha"
+                            data-unlock-level="4"
+                            aria-label="Baunilha bloqueada até o nível 4"
+                            title="Baunilha"
+                            disabled
+                        >
+                            <span class="ingredient-icon">🌼</span>
+                            <span class="ingredient-name">Baunilha</span>
+                            <span class="ingredient-lock">🔒 4</span>
+                        </button>
+
                     </div>
 
                 </div>
@@ -1030,7 +1090,7 @@
                         </p>
 
                         <span class="shop-price">
-                            🪙 80
+                            🪙 500
                         </span>
 
                     </div>
@@ -1039,7 +1099,6 @@
                         class="buy-table-button"
                         type="button"
                         data-buy-table="4"
-                        data-price="80"
                     >
                         Comprar
                     </button>
@@ -1067,7 +1126,7 @@
                         </p>
 
                         <span class="shop-price">
-                            🪙 150
+                            🪙 1.500
                         </span>
 
                     </div>
@@ -1076,7 +1135,6 @@
                         class="buy-table-button"
                         type="button"
                         data-buy-table="5"
-                        data-price="150"
                         disabled
                     >
                         Compre a Mesa 4 primeiro
@@ -1105,7 +1163,7 @@
                         </p>
 
                         <span class="shop-price">
-                            🪙 250
+                            🪙 3.000
                         </span>
 
                     </div>
@@ -1114,7 +1172,6 @@
                         class="buy-table-button"
                         type="button"
                         data-buy-table="6"
-                        data-price="250"
                         disabled
                     >
                         Compre a Mesa 5 primeiro
@@ -1168,6 +1225,14 @@
                     type="button"
                 >
                     Abrir loja
+                </button>
+
+                <button
+                    class="secondary-button home-button"
+                    id="returnToMenuBtn"
+                    type="button"
+                >
+                    🏠 Voltar ao menu
                 </button>
 
                 <button

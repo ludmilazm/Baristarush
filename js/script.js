@@ -201,7 +201,9 @@ const SOUNDS = Object.freeze({
     erro: new Audio('audios/error-126627.mp3'),
     popUp: new Audio('audios/popUp.mp3'),
     moedinhas: new Audio('audios/moedinhasSuccess.mp3'),
-    clienteDesistiu: new Audio('audios/universsfield-fail-trumpet-144746.mp3')
+    clienteDesistiu: new Audio('audios/angryScream.mp3'),
+    clockTicking: new Audio('audios/clockTicking.mp3'),
+    schoolBell: new Audio('audios/schoolBell.mp3')
 });
 
 const ALL_SOUNDS = Object.freeze(Object.values(SOUNDS));
@@ -218,16 +220,15 @@ SOUNDS.andando.volume = 0.6;
 SOUNDS.moedinhas.volume = 0.05;
 SOUNDS.diaFinalizado.volume = 0.5;
 SOUNDS.nivel.volume = 0.5;
+SOUNDS.clockTicking.volume = 0.4;
+SOUNDS.schoolBell.volume = 0.6;
 
 function playSound(sound, restart = true) {
     if (!sound || progress.soundMuted) {
         return;
     }
 
-    if (restart) {
-        sound.currentTime = 0;
-    }
-
+    if (restart) sound.currentTime = 0;
     sound.play().catch(() => {});
 }
 
@@ -258,15 +259,9 @@ function playBackgroundMusic(sound, restart = false) {
 }
 
 function stopSound(sound, reset = false) {
-    if (!sound) {
-        return;
-    }
-
+    if (!sound) return;
     sound.pause();
-
-    if (reset) {
-        sound.currentTime = 0;
-    }
+    if (reset) sound.currentTime = 0;
 }
 
 function stopBackgroundMusic(reset = false) {
@@ -278,15 +273,12 @@ function applySoundPreference() {
     for (const sound of ALL_SOUNDS) {
         sound.muted = progress.soundMuted;
     }
-
     updateSoundButtons();
 }
 
 function updateSoundButtons() {
-    if (!dom.soundToggleButtons) {
-        return;
-    }
-
+    if (!dom.soundToggleButtons) return;
+    
     for (const button of dom.soundToggleButtons) {
         const muted = progress.soundMuted;
         button.textContent = muted ? '🔇 Mudo' : '🔊 Som';
@@ -366,6 +358,8 @@ const runtime = {
     preparation: [],
     satisfaction: 100,
     dayRemaining: CONFIG.DAY_DURATION_SECONDS,
+    tickPlayed: false,
+    bellPlayed: false,
     spawnCountdown: 1.5,
     dirtCountdown: randomBetween(8, 14),
     dirtPenaltyAccumulator: 0,
@@ -682,6 +676,10 @@ function resetDayRuntime() {
     runtime.preparation = [];
     runtime.satisfaction = 100;
     runtime.dayRemaining = CONFIG.DAY_DURATION_SECONDS;
+    runtime.tickPlayed = false;
+    runtime.bellPlayed = false;
+    stopSound(SOUNDS.clockTicking, true);
+    stopSound(SOUNDS.schoolBell, true);
     runtime.spawnCountdown = 1.2;
     runtime.dirtCountdown = randomBetween(8, 14);
     runtime.dirtPenaltyAccumulator = 0;
@@ -855,7 +853,31 @@ function updateDayTimer(deltaSeconds) {
     runtime.dayRemaining = Math.max(0, runtime.dayRemaining - deltaSeconds);
     updateDayTimerDisplay();
 
+    // Últimos 3 segundos
+    if (runtime.dayRemaining <= 10 &&
+        runtime.dayRemaining > 2 &&
+        !runtime.tickPlayed) {
+
+        runtime.tickPlayed = true;
+        playSound(SOUNDS.clockTicking);
+    }
+
+    // Últimos 2 segundos
+    if (runtime.dayRemaining <= 2 &&
+        runtime.dayRemaining > 1 &&
+        !runtime.bellPlayed) {
+
+        runtime.bellPlayed = true;
+
+        stopSound(SOUNDS.clockTicking, true);
+        playSound(SOUNDS.schoolBell);
+    }
+
+    // Acabou o tempo
     if (runtime.dayRemaining <= 0) {
+        stopSound(SOUNDS.clockTicking, true);
+        stopSound(SOUNDS.schoolBell, true);
+
         endDay();
     }
 }
@@ -1046,9 +1068,7 @@ function loseCustomer(customer, message) {
 }
 
 function removeCustomer(customer) {
-    if (!customer) {
-        return;
-    }
+    if (!customer) return;
 
     runtime.queue = runtime.queue.filter((id) => id !== customer.id);
 
@@ -1152,9 +1172,7 @@ function renderQueue() {
 function updateQueueCustomerPatience(customer) {
     const slot = dom.queueList.querySelector(`[data-customer-id="${customer.id}"]`);
 
-    if (!slot) {
-        return;
-    }
+    if (!slot) return;
 
     const fill = slot.querySelector('.queue-patience-fill');
     const percentage = getPatiencePercentage(customer);
@@ -1176,9 +1194,7 @@ function renderAllTables() {
 function renderTable(tableId) {
     const table = runtime.tables.get(tableId);
 
-    if (!table) {
-        return;
-    }
+    if (!table) return;
 
     const element = table.element;
     const customerLayer = element.querySelector('.customer-layer');
